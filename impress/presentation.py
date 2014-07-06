@@ -1,4 +1,4 @@
-from django.template.loader import render_to_string
+from jinja2 import Environment, FileSystemLoader
 from markdown import markdown
 
 from impress import SLIDE_DELIMITER
@@ -30,7 +30,15 @@ def split_slides(content, delimiter=SLIDE_DELIMITER, strip=True):
     return slides
 
 
-def render(slides, template='presentation.html'):
-    return render_to_string(template, {
+def render(slides, template_dir='template', **kwargs):
+    env = Environment(loader=FileSystemLoader(template_dir))
+    template = env.get_template('presentation.html')
+
+    # TODO: add some config object with settings like transition duration with defaults, overridable from kwargs
+    template_vars = {
         'slides': slides,
-    })
+        'num_slides': len(slides),
+    }
+    template_vars.update(kwargs)
+
+    return template.render(**template_vars)
