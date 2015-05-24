@@ -9,8 +9,12 @@ class Slide:
         self.content = content
         self.num = num
 
-    def as_html(self):
-        return markdown(self.content)
+    @property
+    def html(self):
+        return markdown(self.content, extensions=[
+            'extra',
+            'codehilite'
+        ])
 
     def __str__(self):
         return self.content
