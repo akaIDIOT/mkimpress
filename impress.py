@@ -1,7 +1,8 @@
 import argparse
 import re
 
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment
+from jinja2_fsloader import FSLoader
 from markdown import markdown
 
 
@@ -24,7 +25,7 @@ class Slide:
         return '<Slide {}>'.format(self.num)
 
 
-def split_slides(content, delimiter=re.compile(r'(?:\r?\n){3,}'), strip=True):
+def split_slides(content, delimiter=re.compile(r'(?:\r?\n){4,}'), strip=True):
     split = delimiter.split(content)
     slides = []
 
@@ -36,7 +37,7 @@ def split_slides(content, delimiter=re.compile(r'(?:\r?\n){3,}'), strip=True):
 
 
 def render(slides, template_dir='template', **kwargs):
-    env = Environment(loader=FileSystemLoader(template_dir))
+    env = Environment(loader=FSLoader(template_dir))
     template = env.get_template('index.html')
 
     # TODO: add some config object with settings like transition duration with defaults, overridable from kwargs
