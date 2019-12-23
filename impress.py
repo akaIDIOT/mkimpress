@@ -1,9 +1,38 @@
 import argparse
+import json
+from os import path
 import re
 
+import fs
 from jinja2 import Environment
 from jinja2_fsloader import FSLoader
 from markdown import markdown
+
+
+class Template:
+    @classmethod
+    def create(cls, source):
+        if path.isfile(source):
+            source = f'zip://{source}'
+
+        return cls(fs.open_fs(source))
+
+    def __init__(self, source_fs):
+        self._source_fs = source_fs
+        with source_fs.open('template.json') as meta:
+            self._meta = json.load(meta)
+        self._env = Environment(loader=FSLoader(self._source_fs))
+
+    def render(self, slides, **kwargs):
+        template_vars = {
+            'slides': slides,
+            'num_slides': len(slides),
+        }
+        template_vars.update(kwargs)
+
+        template = self._env.get_template(self._meta['template'])
+
+        return template.render(**template_vars)
 
 
 class Slide:
