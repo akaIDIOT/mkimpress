@@ -5,7 +5,7 @@
 #    pip-compile --upgrade requirements.in --output-file requirements.txt
 #
 appdirs==1.4.3            # via fs
-fs==2.4.11                # via jinja2-fsloader
+fs==2.4.11
 jinja2-fsloader==0.2.0
 jinja2==2.10.3
 markdown==3.1.1
