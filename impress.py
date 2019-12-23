@@ -79,12 +79,12 @@ def render(slides, template_dir='template', **kwargs):
     return template.render(**template_vars)
 
 
-def make(infile, outfile, template_dir='template', **kwargs):
-    with open(infile, 'rt') as infile:
-        content = infile.read()
+def make(infile, outfile, template, **kwargs):
+    template = Template.create(template)
 
-    slides = split_slides(content)
-    slides = render(slides, template_dir=template_dir, **kwargs)
+    with open(infile, 'rt') as infile:
+        slides = split_slides(infile.read())
+    slides = template.render(slides, **kwargs)
 
     with open(outfile, 'wt') as outfile:
         outfile.write(slides)
@@ -96,12 +96,12 @@ def main(args=None):
     parser.add_argument('infile', metavar='INFILE')
     parser.add_argument('outfile', metavar='OUTFILE')
 
-    parser.add_argument('--template-dir', default='template')
+    parser.add_argument('--template', default='template')
     parser.add_argument('--title', default='Presentation')
 
     args = parser.parse_args(args)
 
-    make(args.infile, args.outfile, template_dir=args.template_dir, title=args.title)
+    make(args.infile, args.outfile, template=args.template, title=args.title)
 
 
 if __name__ == '__main__':
