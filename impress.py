@@ -31,6 +31,7 @@ class Template:
         template_vars.update(kwargs)
 
         template = self._env.get_template(self._meta['template'])
+        # TODO: copy patterns defined in template file when, to where?
 
         return template.render(**template_vars)
 
@@ -63,20 +64,6 @@ def split_slides(content, delimiter=re.compile(r'(?:\r?\n){4,}'), strip=True):
         slides.append(Slide(slide, num=num))
 
     return slides
-
-
-def render(slides, template_dir='template', **kwargs):
-    env = Environment(loader=FSLoader(template_dir))
-    template = env.get_template('index.html')
-
-    # TODO: add some config object with settings like transition duration with defaults, overridable from kwargs
-    template_vars = {
-        'slides': slides,
-        'num_slides': len(slides),
-    }
-    template_vars.update(kwargs)
-
-    return template.render(**template_vars)
 
 
 def make(infile, outfile, template, **kwargs):
