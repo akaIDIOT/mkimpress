@@ -10,17 +10,17 @@ fs==2.4.13
     # via
     #   -r requirements.in
     #   jinja2-fsloader
-jinja2-fsloader==0.3.0
-    # via -r requirements.in
 jinja2==2.11.3
     # via
     #   -r requirements.in
     #   jinja2-fsloader
+jinja2-fsloader==0.3.0
+    # via -r requirements.in
 markdown==3.3.4
     # via -r requirements.in
 markupsafe==1.1.1
     # via jinja2
-pygments==2.8.1
+pygments==2.15.0
     # via -r requirements.in
 pytz==2021.1
     # via fs
